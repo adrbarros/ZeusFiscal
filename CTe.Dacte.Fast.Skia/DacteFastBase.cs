@@ -1,27 +1,37 @@
-﻿using System;
+using System;
 using System.IO;
 using FastReport;
 using FastReport.Export.Html;
 using FastReport.Export.Pdf;
 
-namespace NFe.Danfe.Fast.Skia
+namespace CTe.Dacte.Fast.Skia
 {
-    public class DanfeFastBase
+    public class DacteFastBase
     {
         public Report Relatorio { get; protected set; }
-        
+
+        public void LoadReport(string arquivoRelatorio)
+        {
+            Relatorio.Load(arquivoRelatorio);
+        }
+
+        public void LoadReport(MemoryStream stream)
+        {
+            Relatorio.Load(stream);
+        }
+
         /// <summary>
-        /// Converte o DANFE para PDF e salva-o no caminho/arquivo indicado
+        /// Converte o DACTE para PDF e salva-o no caminho/arquivo indicado
         /// </summary>
-        /// <param name="arquivo">Caminho/arquivo onde deve ser salvo o PDF do DANFE</param>
+        /// <param name="arquivo">Caminho/arquivo onde deve ser salvo o PDF do DACTE</param>
         public void ExportarPdf(string arquivo)
         {
             Relatorio.Prepare();
             Relatorio.Export(new PDFExport(), arquivo);
         }
-        
+
         /// <summary>
-        /// Converte o DANFE para PDF e copia para o stream
+        /// Converte o DACTE para PDF e copia para o stream
         /// </summary>
         /// <param name="outputStream">Variável do tipo Stream para output</param>
         public void ExportarPdf(Stream outputStream)
@@ -32,11 +42,11 @@ namespace NFe.Danfe.Fast.Skia
         }
 
         /// <summary>
-        /// Converte o DANFE para PDF retorna como byte[]
+        /// Converte o DACTE para PDF retorna como byte[]
         /// </summary>
         public byte[] ExportarPdf()
         {
-            using (MemoryStream stream = new MemoryStream()) // Create a stream for the report
+            using (MemoryStream stream = new MemoryStream())
             {
                 Relatorio.Prepare();
                 Relatorio.Export(new PDFExport(), stream);
@@ -44,11 +54,10 @@ namespace NFe.Danfe.Fast.Skia
             }
         }
 
-        
         /// <summary>
-        /// Converte o DANFE para PDF e salva-o no caminho/arquivo indicado
+        /// Converte o DACTE para PDF e salva-o no caminho/arquivo indicado
         /// </summary>
-        /// <param name="arquivo">Caminho/arquivo onde deve ser salvo o PDF do DANFE</param>
+        /// <param name="arquivo">Caminho/arquivo onde deve ser salvo o PDF do DACTE</param>
         /// <param name="exportBase">Instancia do tipo de exportacao do FastReport</param>
         public void ExportarPdf(string arquivo, FastReport.Export.ExportBase exportBase)
         {
@@ -60,7 +69,7 @@ namespace NFe.Danfe.Fast.Skia
         }
 
         /// <summary>
-        /// Converte o DANFE para PDF e copia para o stream
+        /// Converte o DACTE para PDF e copia para o stream
         /// </summary>
         /// <param name="outputStream">Variável do tipo Stream para output</param>
         /// <param name="exportBase">Instancia do tipo de exportacao do FastReport</param>
@@ -73,14 +82,14 @@ namespace NFe.Danfe.Fast.Skia
             Relatorio.Export(exportBase, outputStream);
             outputStream.Position = 0;
         }
-        
+
         /// <summary>
-        /// Converte o DANFE para PDF retorna como byte[]
+        /// Converte o DACTE para PDF retorna como byte[]
         /// </summary>
         /// <param name="exportBase">Instancia do tipo de exportacao do FastReport</param>
         public byte[] ExportarPdf(FastReport.Export.ExportBase exportBase)
         {
-            using (MemoryStream stream = new MemoryStream()) // Create a stream for the report
+            using (MemoryStream stream = new MemoryStream())
             {
                 Relatorio.Prepare();
                 Relatorio.Export(exportBase, stream);
@@ -90,14 +99,14 @@ namespace NFe.Danfe.Fast.Skia
 
         public byte[] ExportarHtml()
         {
-            using (MemoryStream stream = new MemoryStream()) // Create a stream for the report
+            using (MemoryStream stream = new MemoryStream())
             {
                 Relatorio.Prepare();
                 HTMLExport html = new HTMLExport
                 {
-                    SinglePage = true, // Single page report
-                    Navigator = false, // Top navigation bar
-                    EmbedPictures = true // Embeds images into a document
+                    SinglePage = true,
+                    Navigator = false,
+                    EmbedPictures = true
                 };
                 Relatorio.Export(html, stream);
                 return stream.ToArray();
@@ -109,9 +118,9 @@ namespace NFe.Danfe.Fast.Skia
             Relatorio.Prepare();
             HTMLExport html = new HTMLExport
             {
-                SinglePage = true, // Single page report
-                Navigator = false, // Top navigation bar
-                EmbedPictures = true // Embeds images into a document
+                SinglePage = true,
+                Navigator = false,
+                EmbedPictures = true
             };
             Relatorio.Export(html, outputStream);
             outputStream.Position = 0;
